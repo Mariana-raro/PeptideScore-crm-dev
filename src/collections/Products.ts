@@ -7,6 +7,14 @@ export const Products: CollectionConfig = {
     useAsTitle: 'name',
   },
   fields: [
+    {
+      name: 'index',
+      type: 'number',
+      min: 0,
+      required: true,
+      unique: true,
+      admin: { description: 'Unique index for ordering products' },
+    },
     { name: 'name', type: 'text', required: true, maxLength: 200 },
     { name: 'rating', type: 'number', min: 0, max: 5, defaultValue: 0 },
     { name: 'avg', type: 'number', min: 0, defaultValue: 0 },

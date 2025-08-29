@@ -211,16 +211,100 @@ export interface User {
  */
 export interface Content {
   id: string;
-  category: 'science' | 'history' | 'technology' | 'ai' | 'books';
+  pageType: 'homepage' | 'about' | 'methodology' | 'free-sample-test' | 'general';
+  /**
+   * Unique identifier for the URL (e.g., "about", "homepage")
+   */
+  slug: string;
   title: string;
-  description: string;
-  body: string;
-  imageURL?: string | null;
-  author: string | User;
+  /**
+   * SEO meta description
+   */
+  metaDescription?: string | null;
   status?: ('draft' | 'published' | 'archived') | null;
   views?: number | null;
+  /**
+   * Main mission statement for the about page
+   */
+  missionStatement?: string | null;
+  values?:
+    | {
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  approach?: string | null;
+  teamMembers?:
+    | {
+        name: string;
+        role: string;
+        bio?: string | null;
+        image?: (string | null) | Media;
+        /**
+         * LinkedIn profile URL
+         */
+        linkedin?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  backers?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Name of the main backer/leader
+     */
+    leader?: string | null;
+    /**
+     * URL to leader's profile
+     */
+    leaderProfile?: string | null;
+  };
+  ctaSection?: {
+    title: string;
+    description: string;
+    buttonText: string;
+    buttonLink: string;
+  };
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: string;
+  alt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    card?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -228,6 +312,10 @@ export interface Content {
  */
 export interface Product {
   id: string;
+  /**
+   * Unique index for ordering products
+   */
+  index: number;
   name: string;
   rating?: number | null;
   avg?: number | null;
@@ -316,43 +404,6 @@ export interface BlogPost {
   readTime?: string | null;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: string;
-  alt?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-  sizes?: {
-    thumbnail?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    card?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -542,14 +593,47 @@ export interface UsersSelect<T extends boolean = true> {
  * via the `definition` "content_select".
  */
 export interface ContentSelect<T extends boolean = true> {
-  category?: T;
+  pageType?: T;
+  slug?: T;
   title?: T;
-  description?: T;
-  body?: T;
-  imageURL?: T;
-  author?: T;
+  metaDescription?: T;
   status?: T;
   views?: T;
+  missionStatement?: T;
+  values?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  approach?: T;
+  teamMembers?:
+    | T
+    | {
+        name?: T;
+        role?: T;
+        bio?: T;
+        image?: T;
+        linkedin?: T;
+        id?: T;
+      };
+  backers?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        leader?: T;
+        leaderProfile?: T;
+      };
+  ctaSection?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        buttonText?: T;
+        buttonLink?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -558,6 +642,7 @@ export interface ContentSelect<T extends boolean = true> {
  * via the `definition` "products_select".
  */
 export interface ProductsSelect<T extends boolean = true> {
+  index?: T;
   name?: T;
   rating?: T;
   avg?: T;

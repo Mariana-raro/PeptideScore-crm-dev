@@ -10,9 +10,7 @@ export const Comments: CollectionConfig = {
   },
   access: {
     read: () => true,
-    create: async ({ req: { user } }) => {
-      return !!user
-    },
+    create: () => true,
     update: async ({ req: { user } }) => {
       return !!user && user.role === 'admin'
     },

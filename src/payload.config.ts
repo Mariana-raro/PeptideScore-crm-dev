@@ -9,7 +9,7 @@ import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { CMSUsers } from './collections/CMSUsers'
-import { Content } from './collections/Content'
+import { Content } from './collections/Content/index'
 import { Products } from './collections/Products'
 import { Vendors } from './collections/Vendor'
 import { BlogPosts } from './collections/Blog'
@@ -27,7 +27,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
     livePreview: {
-      collections: ['blog-posts', 'vendors'],
+      collections: ['blog-posts', 'vendors', 'content'],
       url: ({ data, collectionConfig, locale }) => {
         const baseUrl = process.env.NEXT_PUBLIC_CLIENT_URL || 'http://localhost:3000'
 
@@ -37,6 +37,9 @@ export default buildConfig({
 
         if (collectionConfig?.slug === 'vendors') {
           return `${baseUrl}/preview/vendor/${data.vendorName}${locale ? `?locale=${locale.code}` : ''}`
+        }
+        if (collectionConfig?.slug === 'content') {
+          return `${baseUrl}/preview/content/${data.pageType}${locale ? `?locale=${locale.code}` : ''}`
         }
 
         // Fallback to home

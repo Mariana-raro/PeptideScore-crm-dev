@@ -1,6 +1,7 @@
 import { z } from 'zod'
 
 export const productSchema = z.object({
+  index: z.number().min(0, 'Index must be positive').optional(),
   name: z
     .string()
     .min(1, 'Product name is required')

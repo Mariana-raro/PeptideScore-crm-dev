@@ -3,7 +3,7 @@ import { productSchema } from '../scheme/product.scheme'
 import { ValidationError } from 'payload'
 import { z } from 'zod'
 
-export const productBeforeChange: BeforeChangeHook = async ({ data }) => {
+export const productBeforeChange: BeforeChangeHook = async ({ data, req }) => {
   try {
     const formatDate = (date?: string | Date) => {
       if (!date) return undefined
@@ -13,6 +13,17 @@ export const productBeforeChange: BeforeChangeHook = async ({ data }) => {
         month: 'short',
         year: 'numeric',
       })
+    }
+
+    if (!data.index) {
+      const result = await req.payload.find({
+        collection: 'products',
+        sort: '-index',
+        limit: 1,
+      })
+
+      const lastIndex = result.docs?.[0]?.index || 0
+      data.index = lastIndex + 1
     }
 
     const normalizedData = {
