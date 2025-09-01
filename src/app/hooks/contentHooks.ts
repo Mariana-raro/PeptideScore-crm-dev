@@ -4,9 +4,8 @@ import { contentSchema } from '../scheme/content.scheme'
 export const contentBeforeChange: BeforeChangeHook = async ({ data, req }) => {
   contentSchema.parse(data)
 
-  // Verificar que el autor existe
   const authorExists = await req.payload.find({
-    collection: 'users',
+    collection: 'crmusers',
     where: {
       id: { equals: data.author },
     },
@@ -16,7 +15,6 @@ export const contentBeforeChange: BeforeChangeHook = async ({ data, req }) => {
     throw new Error('Author not registered')
   }
 
-  // Para páginas about, validar campos específicos
   if (data.pageType === 'about') {
     if (!data.missionStatement) {
       throw new Error('Mission statement is required for about pages')

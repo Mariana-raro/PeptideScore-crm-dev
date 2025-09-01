@@ -59,7 +59,14 @@ export const contentSchema = z.object({
   sections: z.array(sectionSchema).optional(),
   missionStatement: z.string().max(1000).optional(),
   values: z.array(valueSchema).optional(),
-  approach: z.string().max(1500).optional(),
+  approach: z
+    .object({
+      root: z.object({
+        type: z.literal('root'),
+        children: z.array(z.any()),
+      }),
+    })
+    .optional(),
   teamMembers: z.array(teamMemberSchema).optional(),
   backers: backersSchema.optional(),
   ctaSection: ctaSchema.optional(),

@@ -212,6 +212,7 @@ export interface User {
 export interface Content {
   id: string;
   pageType: 'homepage' | 'about' | 'methodology' | 'free-sample-test' | 'general';
+  author: string | Crmuser;
   /**
    * Unique identifier for the URL (e.g., "about", "homepage")
    */
@@ -234,7 +235,24 @@ export interface Content {
         id?: string | null;
       }[]
     | null;
-  approach?: string | null;
+  /**
+   * Use bold, italics, and other formatting options
+   */
+  approach?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
   teamMembers?:
     | {
         name: string;
@@ -594,6 +612,7 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface ContentSelect<T extends boolean = true> {
   pageType?: T;
+  author?: T;
   slug?: T;
   title?: T;
   metaDescription?: T;

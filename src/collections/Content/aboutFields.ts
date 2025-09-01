@@ -23,10 +23,10 @@ export const aboutFields: Field[] = [
   },
   {
     name: 'approach',
-    type: 'textarea',
-    maxLength: 1500,
+    type: 'richText',
     admin: {
       condition: (data) => data.pageType === 'about',
+      description: 'Use bold, italics, and other formatting options',
     },
   },
   {

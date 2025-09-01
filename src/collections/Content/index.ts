@@ -29,10 +29,22 @@ export const Content: CollectionConfig = {
       defaultValue: 'general',
     },
 
-    // Campos comunes
+    {
+      name: 'author',
+      type: 'relationship',
+      relationTo: 'crmusers',
+      required: true,
+      defaultValue: ({ user }) => user?.id,
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+      },
+    },
+
+    // Common Fields
     ...commonFields,
 
-    // Campos específicos de "about"
+    // Specific fields for "about"
     ...aboutFields,
   ],
   hooks: {
